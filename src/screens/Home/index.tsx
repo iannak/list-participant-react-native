@@ -3,14 +3,14 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ScrollView,
+  FlatList,
 } from "react-native";
 
 import { styles } from "./styles";
 import { Participant } from "../../components/Participant";
 
 export function Home() {
-  const participants = ["Rodrigo", "Otavio", "Anna"];
+  const participants = [];
 
   function handleParticipantAdd() {
     console.log("handleParticipantAdd");
@@ -38,18 +38,20 @@ export function Home() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {participants.map((participant) => (
+      <FlatList data={participants} keyExtractor={item => item} renderItem={({ item }) => (
           <Participant
-            key={participant}
-            name={participant}
-            onRemove={() => handleParticipantRemoved(participant)}
+            key={item}
+            name={item}
+            onRemove={() => handleParticipantRemoved(item)}
           />
-        ))}
-      </ScrollView>
-
-      {/* <Participant name="Anna" onRemove={() => handleParticipantRemoved("Anna")} />
-      <Participant name="Otavio" /> */}
+        )}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>Nenhum participante cadastrado</Text>
+          </View>
+        )}
+        />
     </View>
   );
 }
